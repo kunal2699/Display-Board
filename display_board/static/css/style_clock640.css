@@ -1,0 +1,47 @@
+  .datetime{
+    color: #fff;
+    background: #10101E;
+    font-family: "Segoe UI", sans-serif;
+    width:540px;
+    padding: 10px 0px;
+    transition: 0.5s;
+    transition-property: background, box-shadow;
+    margin-top: -82px;
+  }
+  
+  .datetime:hover{
+    background: #449ce4;
+  }
+  
+  .date{
+    font-size: 28px;
+    font-weight: 200;
+    text-align: center;
+    letter-spacing: 0px;
+  }
+  
+  .time{
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .time span:not(:last-child){
+    position: relative;
+    margin: 0 2px;
+    font-weight: 300;
+    text-align: center;
+    letter-spacing: 0px;
+  }
+  
+  .time span:last-child{
+    background: #1382dd;
+    font-size: 24px;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-top: 10px;
+    padding: 0 2px;
+    border-radius: 3px;
+  }
+      

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <style>
+        /* Add your CSS styles here */
+        .toggle-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .toggle-item {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <div class="toggle-container">
+        <div class="toggle-item">
+            
+            <label for="city1">
+                <input type="checkbox" id="city1" name="city" value="Shimla-City" checked> Shimla-City
+            </label><br>
+            <label for="city2">
+                <input type="checkbox" id="city2" name="city" value="Sundernagar" checked> Sundernagar
+            </label><br>
+            <label for="city3">
+                <input type="checkbox" id="city3" name="city" value="Kangra" checked> Kangra
+            </label><br>
+            <label for="city4">
+                <input type="checkbox" id="city4" name="city" value="Keylong" checked> Keylong
+            </label><br>
+            <label for="city5">
+                <input type="checkbox" id="city5" name="city" value="Chamba SARU FARM" checked> Chamaba Saru FARM
+            </label><br>
+            <label for="city6">
+                <input type="checkbox" id="city6" name="city" value="Kufri" checked> Kufri
+            </label><br>
+        </div>
+        <!-- Repeat the above div for each city -->
+    </div>
+    <button onclick="updateVisibility()">Update Visibility</button>
+
+    <script>
+        function updateVisibility() {
+            visibilityData=[]
+            const city1Visible = document.getElementById('city1').checked;
+            const city2Visible = document.getElementById('city2').checked;
+            const city3Visible = document.getElementById('city3').checked;
+            const city4Visible = document.getElementById('city4').checked;
+            const city5Visible = document.getElementById('city5').checked;
+            const city6Visible = document.getElementById('city6').checked;
+            // Get visibility status for each city and send to Flask
+             visibilityData = {
+                'Shimla-City': city1Visible,
+                Sundernagar: city2Visible, 
+                Kangra: city3Visible,
+                Keylong: city4Visible,
+                'Chamba SARU FARM': city5Visible,
+                Kufri: city6Visible,
+                // Add more cities as needed
+            };
+
+            fetch('/update_visibility', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(visibilityData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Visibility updated successfully');
+                } else {
+                    alert('Error updating visibility');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

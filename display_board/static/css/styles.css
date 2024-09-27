@@ -1,0 +1,28 @@
+/* styles.css */
+
+/* Overall container */
+.weather-container {
+    background-color: #f0f8ff; /* Powder blue background */
+    padding: 20px;
+    text-align: center;
+}
+
+/* City info */
+.city-info {
+    color: #008000; /* Green text */
+}
+
+/* Temperature */
+.temperature {
+    color: #008000; /* Green text */
+}
+
+/* Humidity */
+.humidity {
+    color: #008000; /* Green text */
+}
+
+/* Wind speed */
+.wind {
+    color: #008000; /* Green text */
+}
