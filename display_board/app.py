@@ -57,32 +57,41 @@ def update_visibility():
         city_visibility[city] = visible
     return jsonify({'message': 'Visibility updated successfully'})
 
-@app.route('/get_weather_data',methods=['GET', 'POST'])
+@app.route('/get_weather_data', methods=['GET', 'POST'])
 def get_weather_data():
-    url = "https://mausam.imd.gov.in/shimla/"
+    url = "https://mausam.imd.gov.in/shimla/"  # Replace with the actual URL
+
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    data = soup.find('div', {'class': 'capitals clearfix'})
-    data = data.find('div', {'class': 'capital'})
     weather_data = []
-    
-    i = 0
-    while i < 8:
-        city = data.find('h3').text
-        if city_visibility[city]:
-            temp = data.find('p', {'class': 'now'}).text if data.find('p', {'class': 'now'}) is not None else None
-            humidity = data.find('p', {'class': 'minmax'}).text if data.find('p', {'class': 'minmax'}) is not None else None
-            wind = data.find('p', {'class': 'wind'}).text if data.find('p', {'class': 'wind'}) is not None else None
-            weather_data.append({'City': city, 'Temperature': temp, 'Humidity': humidity, 'Wind': wind})
-            data1 = data.find_next('div', {'class': 'capital'})
-            data = data1
-            i += 1
+    data = soup.find_all('div', {'class': 'container'})  # Find all container divs that hold weather data
+
+    for item in data:
+        # Extract city name from the card__name div
+        city_name = item.find_previous('div', {'class': 'card__name'}).text.strip()
+
+        if city_visibility[city_name] :
+            # Extract temperature, humidity, and wind from their respective divs (by order or class)
+            boxes = item.find_all('div', {'class': 'box'})  # Get all boxes containing temperature, humidity, wind
+
+            if len(boxes) >= 4:
+                # Extract the data assuming the order of boxes as:
+                # box[0] = temperature, box[2] = humidity, box[3] = wind
+                temp = boxes[0].text.strip()
+                humidity = boxes[2].text.strip()
+                wind = boxes[3].text.strip()
+
+                # Append extracted data to the weather_data list
+                weather_data.append({
+                    'City': city_name,
+                    'Temperature': temp,
+                    'Humidity': humidity,
+                    'Wind': wind,
+                })
         else:
-            data= data.find_next('div', {'class': 'capital'})
-            i += 1
-            print('Data not found')
-   
+            print(f'Skipping city: {city_name} due to visibility settings')
+
     return jsonify(weather_data)
 
 def get_image_from_google_drive(drive_url):
